@@ -6,6 +6,11 @@ exports.register = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    // Validazione base
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Email e password sono obbligatorie' });
+    }
+
     // Controlla se l'utente esiste già
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -28,19 +33,23 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    console.log('BODY LOGIN:', req.body);
     const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Email e password sono obbligatorie' });
+    }
 
     // Trova utente per email
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: 'Email non trovata' });
+      // Non specificare se email o password errati per sicurezza
+      return res.status(400).json({ message: 'Credenziali non valide' });
     }
 
     // Controlla password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Password errata' });
+      return res.status(400).json({ message: 'Credenziali non valide' });
     }
 
     // Genera token JWT
@@ -50,7 +59,6 @@ exports.login = async (req, res) => {
       { expiresIn: '2h' }
     );
 
-    // Risposta con token e email
     return res.json({ token, email: user.email });
   } catch (error) {
     console.error('Errore durante il login:', error);
