@@ -1,0 +1,73 @@
+.login-container {
+  background-color: var(--green-primary);
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-container h2 {
+  text-align: center;
+  color: var(--green-dark);
+  font-size: 2rem;
+  padding-top: 300px;
+  margin-bottom: var(--spacing-xl);
+}
+
+.login-form {
+  width: 320px;
+}
+
+.login-form label {
+  display: block;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 600;
+  color: var(--green-dark);
+}
+
+.login-form input[type="email"],
+.login-form input[type="password"] {
+  width: 100%;
+  padding: var(--spacing-sm);
+  border: 1px solid var(--gray-medium);
+  border-radius: var(--radius-sm);
+  margin-top: var(--spacing-xl);
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  font-family: var(--font-base);
+}
+
+.login-form input[type="email"]:focus,
+.login-form input[type="password"]:focus {
+  border-color: var(--green-dark);
+  outline: none;
+}
+
+.login-form button {
+  width: 100%;
+  padding: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+  color: var(--white);
+  background-color: var(--green-dark);
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease;
+}
+
+.login-form button:hover {
+  background-color: var(--green-light);
+  cursor: pointer;
+  background-color: var(--green-light);
+  color: var(--black);
+}
+
+.login-error {
+  color: var(--red-error);
+  font-size: 0.9rem;
+  margin-top: -var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  text-align: center;
+}

@@ -1,0 +1,35 @@
+
+@media (max-width: var(--breakpoint-md)) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .button-container,
+  .landing-nav {
+    grid-auto-flow: row;
+    justify-content: center;
+  }
+
+  .order-summary {
+    padding: var(--spacing-md);
+  }
+
+  .projects-page {
+    padding: var(--spacing-md);
+  }
+
+  .project-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: var(--breakpoint-sm)) {
+  .landing-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .landing-header p {
+    font-size: 1.2rem;
+  }
+}

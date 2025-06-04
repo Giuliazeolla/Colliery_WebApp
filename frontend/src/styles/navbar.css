@@ -1,0 +1,76 @@
+/* NAVBAR */
+.flex {
+    align-items: center;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: transparent;
+  margin-top: 50px;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+/* LOGO */
+.nav-logo {
+ width: 100px;
+}
+
+/* LINK CONTAINER */
+.nav-links {
+  display: flex;
+  gap: var(--spacing-md);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* OGNI <li> CONTENENTE UN <a> */
+.nav-links li {
+  display: inline-block;
+}
+
+/* STILE LINK */
+.nav-links li a {
+  font-size: 0.9rem;
+  text-decoration: none;
+  color: var(--green-dark);
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease-in-out;
+}
+
+.nav-links li a:hover {
+  color: var(--white);
+  background-color: var(--green-dark);
+}
+
+/* SEZIONE LOGIN / LOGOUT */
+.auth-section {
+  display: flex;
+  align-items: center;
+}
+
+/* BOTTONI */
+.logout-button 
+{
+  background-color: var(--green-dark);
+  color: var(--white);
+  border: none;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.logout-button:hover
+{
+  background-color: var(--green);
+  color: var(--black);
+}

@@ -1,0 +1,132 @@
+.form-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--black);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--gray-medium);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.3s ease;
+  font-family: var(--font-base);
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: var(--green-primary);
+  outline: none;
+}
+
+.form-submit {
+  background-color: var(--green-dark);
+  color: var(--white);
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: 600;
+}
+
+.form-submit:hover {
+  background-color: var(--green-light);
+}
+
+.form-success {
+  color: green;
+  font-weight: 600;
+  margin-top: var(--spacing-md);
+}
+
+.form-error {
+  color: var(--red-error);
+  font-weight: 600;
+  margin-top: var(--spacing-md);
+  text-align: center;
+}
+
+
+/*--FORM RICHIESTA PREVENTIVO*/
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-prv {
+max-width: 800px;
+}
+
+.form-prv h2{
+margin: 50px 0 70px 0;
+font-size: var(--font-size);
+}
+
+
+.richiesta-preventivo label, legend{
+  font-weight: 700;
+}
+
+.container-rc {
+display: flex;
+flex-direction: column;
+gap: 50px;
+}
+
+.button-rc {
+background-color: var(--green-dark);
+width: 100px;
+height: 35px;
+border-radius: 6px;
+color: var(--white);
+}
+
+.button-rc:hover {
+background-color: var(--green-light);
+color: var(--black);
+}
+
+.div-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100px;
+}
+
+.input-rc {
+  border-radius: 5px;
+  border: 1px transparent;
+  height: 20px;
+  margin-left: 10px;
+}
+
+.input-rc:active {
+  border: 1px var(--gray-medium);
+}
+
+.fieldset {
+width: 500px;
+}
+
+.label {
+  margin-left: 50px;
+}
+
