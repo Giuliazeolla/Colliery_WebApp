@@ -81,14 +81,9 @@ font-size: var(--font-size);
 }
 
 
-.richiesta-preventivo label, legend{
-  font-weight: 700;
-}
-
-.container-rc {
-display: flex;
-flex-direction: column;
-gap: 50px;
+.form-prv label, legend{
+  font-weight: 500;
+  font-size: large;
 }
 
 .button-rc {
@@ -114,8 +109,9 @@ color: var(--black);
 .input-rc {
   border-radius: 5px;
   border: 1px transparent;
-  height: 20px;
+  height: 30px;
   margin-left: 10px;
+  width: 100%;
 }
 
 .input-rc:active {
@@ -130,3 +126,12 @@ width: 500px;
   margin-left: 50px;
 }
 
+.l{
+margin-top: 50px;
+}
+
+input[type="checkbox"] {
+  width: 16px;   /* dimensione più piccola rispetto a default */
+  height: 16px;
+  cursor: pointer;
+}

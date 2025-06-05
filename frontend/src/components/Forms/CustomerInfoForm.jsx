@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -37,6 +37,58 @@ function CustomerInfoForm() {
     timbroFirma: "",
   });
 
+  useEffect(() => {
+    const fetchFormData = async () => {
+      const token = localStorage.getItem("token");
+      if (!token || !utente?.id) return;
+
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/form1/${utente.id}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        if (response.data) {
+          const serverData = response.data;
+
+          // Formatta la data per l'input date (yyyy-mm-dd)
+          let formattedDate = "";
+          if (serverData.data) {
+            formattedDate = new Date(serverData.data).toISOString().substring(0, 10);
+          }
+
+          setFormData({
+            ragioneSociale: serverData.ragioneSociale || "",
+            sedeLegale: serverData.sedeLegale || "",
+            città: serverData.città || "",
+            cap: serverData.cap || "",
+            provincia: serverData.provincia || "",
+            telefono: serverData.telefono || "",
+            fax: serverData.fax || "",
+            email: serverData.email || "",
+            pec: serverData.pec || "",
+            partitaIva: serverData.partitaIva || "",
+            codiceFiscale: serverData.codiceFiscale || "",
+            sdi: serverData.sdi || "",
+            sitoInternet: serverData.sitoInternet || "",
+            refAmministrativo: serverData.refAmministrativo || "",
+            emailRefAmministrativo: serverData.emailRefAmministrativo || "",
+            cellulareRefAmministrativo: serverData.cellulareRefAmministrativo || "",
+            refCommerciale: serverData.refCommerciale || "",
+            emailRefCommerciale: serverData.emailRefCommerciale || "",
+            cellulareRefCommerciale: serverData.cellulareRefCommerciale || "",
+            ivaAgevolata: serverData.ivaAgevolata || false,
+            data: formattedDate,
+            timbroFirma: serverData.timbroFirma || "",
+          });
+        }
+      } catch (error) {
+        console.error("Errore nel recupero dati scheda anagrafica:", error);
+      }
+    };
+
+    fetchFormData();
+  }, [utente]);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -47,18 +99,23 @@ function CustomerInfoForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Dati inviati:", formData);
-    const dataISO = new Date(formData.data).toISOString();
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.warn("Token mancante, impossibile inviare richiesta autenticata.");
+      return;
+    }
+
+    // Converte la data in ISO 8601, oppure null se vuota
+    const dataISO = formData.data ? new Date(formData.data).toISOString() : null;
 
     try {
-      const response = await axios.post("/api/form/submit", {
-        ...formData,
-        data: dataISO,
-        userId: utente?.id,
-      });
+      const response = await axios.post(
+        "http://localhost:5000/api/form1/submit",
+        { ...formData, data: dataISO },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
       console.log(response.data.message);
-      navigate("/riepilogo-ordine");
     } catch (error) {
       console.error("Errore durante l'invio del form:", error);
     }
@@ -85,50 +142,48 @@ function CustomerInfoForm() {
       <div className="container">
         <Navbar />
       </div>
-      <div className="title fade-in" style={{ 'marginTop': '80px' }}>
-        <h1>Scheda Anagrafica Cliente</h1>
-      </div>
-      <form onSubmit={handleSubmit} className="form-container">
-        {renderInput("Ragione Sociale", "ragioneSociale")}
-        {renderInput("Sede Legale", "sedeLegale")}
-        {renderInput("Città", "città")}
-        {renderInput("CAP", "cap")}
-        {renderInput("Provincia", "provincia")}
-        {renderInput("Telefono", "telefono", "tel")}
-        {renderInput("Fax", "fax", "tel")}
-        {renderInput("Email", "email", "email")}
-        {renderInput("PEC", "pec", "email")}
-        {renderInput("Partita IVA", "partitaIva")}
-        {renderInput("Codice Fiscale", "codiceFiscale")}
-        {renderInput("SDI", "sdi")}
-        {renderInput("Sito Internet", "sitoInternet", "url")}
-        {renderInput("Referente Amministrativo", "refAmministrativo")}
-        {renderInput("Email Ref. Amm.", "emailRefAmministrativo", "email")}
-        {renderInput(
-          "Cellulare Ref. Amm.",
-          "cellulareRefAmministrativo",
-          "tel"
-        )}
-        {renderInput("Referente Commerciale", "refCommerciale")}
-        {renderInput("Email Ref. Comm.", "emailRefCommerciale", "email")}
-        {renderInput("Cellulare Ref. Comm.", "cellulareRefCommerciale", "tel")}
-        <div className="form-group">
-          <label className="form-label">
-            <input
-              type="checkbox"
-              name="ivaAgevolata"
-              checked={formData.ivaAgevolata}
-              onChange={handleChange}
-            />{" "}
-            IVA Agevolata
-          </label>
+      <div className="fade-in">
+        <div className="title" style={{ marginTop: "80px" }}>
+          <h1>Scheda Anagrafica Cliente</h1>
         </div>
-        {renderInput("Data", "data", "date")}
-        {renderInput("Timbro e Firma", "timbroFirma")}
-        <button type="submit" className="form-submit">
-          Invia
-        </button>
-      </form>
+        <form onSubmit={handleSubmit} className="form-container">
+          {renderInput("Ragione Sociale", "ragioneSociale")}
+          {renderInput("Sede Legale", "sedeLegale")}
+          {renderInput("Città", "città")}
+          {renderInput("CAP", "cap")}
+          {renderInput("Provincia", "provincia")}
+          {renderInput("Telefono", "telefono", "tel")}
+          {renderInput("Fax", "fax", "tel")}
+          {renderInput("Email", "email", "email")}
+          {renderInput("PEC", "pec", "email")}
+          {renderInput("Partita IVA", "partitaIva")}
+          {renderInput("Codice Fiscale", "codiceFiscale")}
+          {renderInput("SDI", "sdi")}
+          {renderInput("Sito Internet", "sitoInternet", "url")}
+          {renderInput("Referente Amministrativo", "refAmministrativo")}
+          {renderInput("Email Ref. Amm.", "emailRefAmministrativo", "email")}
+          {renderInput("Cellulare Ref. Amm.", "cellulareRefAmministrativo", "tel")}
+          {renderInput("Referente Commerciale", "refCommerciale")}
+          {renderInput("Email Ref. Comm.", "emailRefCommerciale", "email")}
+          {renderInput("Cellulare Ref. Comm.", "cellulareRefCommerciale", "tel")}
+          <div className="form-group">
+            <label className="form-label">
+              <input
+                type="checkbox"
+                name="ivaAgevolata"
+                checked={formData.ivaAgevolata}
+                onChange={handleChange}
+              />{" "}
+              IVA Agevolata
+            </label>
+          </div>
+          {renderInput("Data", "data", "date")}
+          {renderInput("Timbro e Firma", "timbroFirma")}
+          <button type="submit" className="form-submit">
+            Invia
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

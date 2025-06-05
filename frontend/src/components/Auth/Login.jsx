@@ -6,6 +6,7 @@ import { loginUser } from "../../utils/auth";
 import '../../styles/login.css';
 
 function   Login() {
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -29,6 +30,9 @@ function   Login() {
           token: result.token,
         }));
        navigate('/home'); 
+       // Dopo una corretta autenticazione
+localStorage.setItem("token", result.token); // Salva il token nel localStorage
+
       } else {
         setError(result.message || "Credenziali non valide");
       }
@@ -47,6 +51,7 @@ function   Login() {
 
         <input
           type="email"
+          name="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -56,6 +61,7 @@ function   Login() {
 
         <input
           type="password"
+          name="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}

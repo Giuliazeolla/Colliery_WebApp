@@ -1,123 +1,79 @@
 const mongoose = require('mongoose');
 
-const formSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+const AllegatoSchema = new mongoose.Schema({
+  filename: String,
+  originalname: String,
+  path: String,
+  mimetype: String,
+  size: Number
+});
 
-  // Scheda Anagrafica Cliente
+const FormSchema = new mongoose.Schema({
+  // Dati cliente
   ragioneSociale: String,
-  sedeLegale: String,
-  citta: String,
-  cap: String,
+  nomeProgetto: String,
+  localitaComune: String,          // aggiornato da localita a localitaComune
   provincia: String,
-  telefono: String,
-  fax: String,
-  email: String,
-  pec: String,
-  partitaIva: String,
-  codiceFiscale: String,
-  sdi: String,
-  sitoInternet: String,
-  refAmministrativo: {
-    nome: String,
-    email: String,
-    cellulare: String
-  },
-  refCommerciale: {
-    nome: String,
-    email: String,
-    cellulare: String
-  },
-  ivaAgevolata10: Boolean,
-  dataCompilazione: Date,
-  timbroFirma: String, // Può essere una stringa o base64 (firma digitale)
+  emailContatto: String,           // aggiornato da email a emailContatto
+  telefonoContatto: String,        // aggiornato da telefono a telefonoContatto
 
-  // Richiesta Preventivo
-  tipoStruttura: { type: String, enum: ['Struttura standard', 'Struttura Agrivoltaico'] },
+  // Disposizione moduli
+  disposizioneModuli: String,
+  disposizioneModuliAltro: String,
+
+  // Specifiche tecniche generali
+  tiltGradi: Number,
+  nrModuliPerStringa: Number,
+  altezzaMinima: Number,
+  nrModuliComplessivi: Number,
+  potenzaModulo: Number,
+
+  // Scelte form
+  struttura: String,
+  tipologiaStruttura: String,
+  depositoSismico: String,
+
+  coordinate: String,
+  note: String,
+
+  // Opzionali
   richiesteAggiuntive: {
     recinzione: Boolean,
     pullOutTest: Boolean,
-    sistemaMonitoraggio: Boolean,
+    agrivoltaicoMonitoraggio: Boolean,
     infissionePali: Boolean
   },
 
-  // Dati Generali
-  nomeProgetto: String,
-  coordinateProgetto: {
-    latitudine: String,
-    longitudine: String
-  },
-  localitaComune: String,
-  provinciaProgetto: String,
-  referente: String,
-  contatti: {
-    email: String,
-    telefono: String
-  },
+  // Agrivoltaico
+  distPali: Number,
+  distFile: Number,
+  noteAgrivoltaico: String,
 
-  // Tipologia Struttura (una sola scelta)
-  tipologiaStruttura: { type: String, enum: ['fissa', 'pensilina', 'tracker'] },
-  depositoSismico: { type: String, enum: ['si', 'no'] },
+  // Agrivoltaico monitoraggio avanzato
+  nrStazioniMonitoraggio: Number,
+  sensoriRichiesti: [String],
+  altroSensore: String,
 
-  specificheTecniche: {
-    tiltGradi: Number,
-    nrModuliStringa: Number,
-    altezzaMinimaMt: Number,
-    nrModuliComplessivi: Number,
-    potenzaModuloWp: Number
-  },
+  // Infissione pali
+  tipoPaloInfissione: String,
+  numPaliInfissione: Number,
+  lunghezzaPaloInfissione: Number,
+  profonditaInfissione: Number,
 
-  // Agrivoltaico (mostrato solo se Struttura Agrivoltaico)
-  agrivoltaico: {
-    distanzaPaliMt: Number,
-    distanzaFileMt: Number,
-    note: String
-  },
+  // Pull-out test
+  tipoPaloPullOut: String,
+  numPaliPullOut: Number,
+  lunghezzaPaloPullOut: Number,
+  profonditaPullOut: Number,
 
-  // Agrivoltaico monitoraggio avanzato (solo se selezionato)
-  agrivoltaicoMonitoraggio: {
-    nrStazioniMonitoraggio: Number,
-    sensoriRichiesti: {
-      anemometro: Boolean,
-      barometro: Boolean,
-      pluviometro: Boolean,
-      radiazioneSolare: Boolean,
-      sensoreEC: Boolean,
-      termoIgnometro: Boolean
-    }
-  },
-
-  // Tipologia Servizi
-
-  pullOutTestDettagli: {  // se pull-out test selezionato
-    tipologiaPalo: String,
-    numPali: Number,
-    lunghezzaPaloMt: Number,
-    profonditaInfissioneMt: Number
-  },
-
-  infissionePaliDettagli: {  // se infissione pali selezionato
-    tipologiaPalo: String,
-    numPali: Number,
-    lunghezzaPaloMt: Number,
-    profonditaInfissioneMt: Number
-  },
-
-  noteCriticita: String,
-
-  // Documenti da allegare (checkbox e potenzialmente upload files)
-  documentiAllegati: {
-    relazioneGeologica: Boolean,
-    schedaTecnicaModulo: Boolean,
-    layoutImpiantoDwg: Boolean,
-    rilievoCurveLivello: Boolean
-  },
-  // qui potresti aggiungere campi per i file upload, es. url o path file
-
+  // Upload & firma
+  allegati: [AllegatoSchema],
+  consenso: Boolean,
   dataFirma: Date,
-  consensoPrivacy: { type: Boolean, required: true }
-},
-{
-  timestamps: true
-});
+  firma: String,
 
-module.exports = mongoose.model('Form', formSchema);
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null }
+
+}, { timestamps: true });
+
+module.exports = mongoose.model('Form', FormSchema);
